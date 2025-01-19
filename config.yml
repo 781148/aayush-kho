@@ -1,0 +1,9 @@
+theme: jekyll-theme-cayman
+
+title: Aayush Kho
+
+# Navigation Bar
+header_pages:
+  - home.md
+  - project.md
+  - about.md
