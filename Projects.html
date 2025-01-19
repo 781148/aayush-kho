@@ -44,6 +44,21 @@
             max-width: 600px;
             margin: 0 auto;
         }
+        .code-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 90%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +69,194 @@
             <a href="About.html">About</a>
         </div>
     </nav>
-    <h1>Project Page</h1>
-    <p>Welcome to the Project page!</p>
+    <h1>Traffic Light Project</h1>
+    <p>Welcome to the Traffic Light project page! This project demonstrates the use of a Raspberry Pi 4b to control a traffic light system. The logic incorporates threading in Python to manage multiple tasks concurrently, such as controlling traffic lights, pedestrian signals, and left turn indicators. The project uses GPIOZero for simpler control of the Raspberry Pi GPIO pins.</p>
+    
+    <h2>Project Explanation</h2>
+    <p>This traffic light system simulates real-world traffic lights with pedestrian controls. The sequence of lights is adjusted based on button presses, with green, yellow, and red phases. Additionally, the pedestrian button initiates a sequence where pedestrian lights are displayed, and the system returns to its normal operation.</p>
+
+    <h2>Project Features</h2>
+    <ul>
+        <li>Pedestrian button to trigger pedestrian lights.</li>
+        <li>Left turn signal that activates with each cycle.</li>
+        <li>Real-time status updates on the terminal.</li>
+        <li>Uses GPIOZero library for simplified Raspberry Pi GPIO control.</li>
+    </ul>
+
+    <h2>Python Code</h2>
+    <div class="code-container">
+        <pre>
+import time
+import threading
+from gpiozero import LED, Button
+
+input_received = threading.Event()
+pedestrian_active = threading.Event()
+normal_run_pause = threading.Event()
+leftturndone = threading.Event()
+
+led = LED(17)
+gled = LED(27)
+yled = LED(22)
+rled = LED(23)
+gled2 = LED(24)
+yled2 = LED(25)
+pled1 = LED(16)
+pled1red = LED(26)
+pled2 = LED(15)
+pled2red = LED(14)
+leftturn1 = LED(6)
+crossbutton = Button(5)
+
+def leftturn():
+     print("Color 1: Left Turn On")
+     leftturn1.on()
+     time.sleep(2)
+     print("Color 1: Left Turn Off")
+     leftturn1.off()
+     
+def leftturngreen():
+    print("\nColor: Green")
+    gled.on()
+    print("\nPedestrian 1: On")
+    time.sleep(5)
+    gled.off()
+    print("Pedestrian 1: Off")
+
+def leftturn2():
+    print("Color 1: Left Turn On")
+    leftturn1.on()
+    time.sleep(2)
+    print("Color 1: Left Turn Off")
+    leftturn1.off()
+    leftturndone.set()
+
+def leftturngreen2():
+    pled1red.off()
+    print("\nColor: Green")
+    gled.on()
+    leftturndone.wait()
+    pled1.on()
+    print("\nPedestrian 1: On")
+    time.sleep(3)
+    gled.off()
+    print("Pedestrian 1: Off")
+    pled1.off()
+    leftturndone.clear()
+    pled1red.on()
+
+def aftercrossing2():
+    print("Color 2: Green")
+    gled2.on()
+    print("Color 2: Pedestrian On")
+    pled2red.off()
+    pled2.on()
+    time.sleep(5)
+    pled2.off()
+    pled2red.on()
+    gled2.off()
+    print("Color 2: Yellow")
+    yled2.on()
+    time.sleep(2)
+    yled2.off()
+    led.off()
+
+def cross_input():
+    while True:
+        if crossbutton.is_pressed:
+            input_received.set()  # Set the event to signal input has been received
+
+def red_light():
+    print("\nColor: Red")
+    led.on()
+    time.sleep(8)
+    led.off()
+
+def normalrun2():
+    while True:
+        pled1red.on()
+        pled2red.on()
+        print("\nColor 2: Red")
+        rled.on()
+        time.sleep(8)
+        rled.off()
+        normal_run_pause.wait()
+        if pedestrian_active.is_set():
+            print("\nSkipping Color 2: Green due to pedestrian sequence")
+            continue
+        else:
+            print("\nColor 2: Green")
+            gled2.on()
+            time.sleep(5)
+            gled2.off()
+        print("\nColor 2: Yellow")
+        yled2.on()
+        time.sleep(2)
+        yled2.off()
+        break
+
+def pedestrianrun2():
+    while True:
+        pedestrian_active.set()
+        normal_run_pause.clear()
+        t1_2 = threading.Thread(target=aftercrossing2, daemon=True)
+        t1_3 = threading.Thread(target=leftturn2, daemon=True)
+        t1_4 = threading.Thread(target=leftturngreen2, daemon=True)
+        print("\Color 2: Red")
+        rled.on()
+        t1_4.start()
+        t1_3.start()
+        t1_4.join()
+        print("\nColor 2: Yellow")
+        yled.on()
+        time.sleep(2)
+        yled.off()
+        rled.off()
+        led.on()
+        t1_2.start()
+        t1_2.join()
+        t1_3.join()
+        break
+
+    pedestrian_active.clear()
+    normal_run_pause.set()
+
+def normalrun():
+    while True:
+        t6 = threading.Thread(target=leftturn, daemon=True)
+        t5 = threading.Thread(target=leftturngreen, daemon=True)
+        t4 = threading.Thread(target=pedestrianrun2, daemon=True)
+        t3 = threading.Thread(target=normalrun2, daemon=True)
+        t2 = threading.Thread(target=red_light, daemon=True)
+        t1 = threading.Thread(target=cross_input, daemon=True)
+        normal_run_pause.set()
+        t3.start()
+        pled1red.on()
+        pled2red.on()
+        t5.start()
+        t6.start()
+        t5.join()
+        print("\nColor: Yellow")
+        yled.on()
+        time.sleep(2)
+        yled.off()
+        t2.start()
+        t1.start()
+        t1.join(timeout=8)
+        if input_received.is_set():
+            print("\nActive")
+            t4.start()
+            t4.join()
+            input_received.clear()
+        elif t1.is_alive():
+            print("\nNo")
+            input_received.clear()
+        t2.join()
+        t3.join()
+        t6.join()
+
+normalrun()
+        </pre>
+    </div>
 </body>
 </html>
