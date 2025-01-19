@@ -141,7 +141,7 @@
             const cell = event.target;
 
             // Ignore click if the cell is already filled or the game is over
-            if (cell.textContent || !gameActive) return;
+            if (cell.textContent || !gameActive || currentPlayer === 'o') return;
 
             cell.textContent = currentPlayer === 'x' ? 'X' : 'O';
             cell.classList.add(currentPlayer);
@@ -154,8 +154,11 @@
                 gameActive = false;
                 statusText.textContent = 'It\'s a tie!';
             } else {
-                currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
-                statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
+                currentPlayer = 'o';
+                statusText.textContent = `Player O's turn`;
+
+                // AI makes its move after player X
+                setTimeout(aiMove, 500);
             }
         }
 
@@ -171,6 +174,32 @@
             });
         }
 
+        // AI makes its move
+        function aiMove() {
+            // Get all available cells
+            const availableCells = Array.from(cells).filter(cell => !cell.textContent);
+
+            // If there are no available cells, return
+            if (availableCells.length === 0) return;
+
+            // AI randomly selects an available cell
+            const randomCell = availableCells[Math.floor(Math.random() * availableCells.length)];
+            randomCell.textContent = 'O';
+            randomCell.classList.add('o');
+
+            // Check for win or tie after AI move
+            if (checkWin()) {
+                gameActive = false;
+                statusText.textContent = 'Player O wins!';
+            } else if (Array.from(cells).every(cell => cell.textContent)) {
+                gameActive = false;
+                statusText.textContent = 'It\'s a tie!';
+            } else {
+                currentPlayer = 'x';
+                statusText.textContent = `Player X's turn`;
+            }
+        }
+
         // Reset the game
         function resetGame() {
             cells.forEach(cell => {
@@ -179,7 +208,7 @@
             });
             currentPlayer = 'x';
             gameActive = true;
-            statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
+            statusText.textContent = `Player X's turn`;
         }
 
         // Event listeners for cell clicks and reset button
@@ -189,6 +218,5 @@
 
         resetBtn.addEventListener('click', resetGame);
     </script>
-
 </body>
 </html>
