@@ -44,6 +44,48 @@
             max-width: 600px;
             margin: 0 auto;
         }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 30px auto;
+            width: 320px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #ddd;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .cell.x {
+            color: #ff6347; /* Red */
+        }
+        .cell.o {
+            color: #4682b4; /* Blue */
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: block;
+            margin: 20px auto;
+        }
     </style>
 </head>
 <body>
@@ -56,5 +98,97 @@
     </nav>
     <h1>Aayush Khosla</h1>
     <p>An aspiring cricketer with a passion for tech and innovation.</p>
+    <p style="text-align: center; font-size: 1.2rem;">Go to the <a href="About.html">About</a> section to learn more about me and check out my projects in the <a href="Projects.html">Projects</a> section!</p>
+    
+    <h2 style="text-align: center;">Here's a fun game meanwhile...</h2>
+
+    <!-- Tic-Tac-Toe Game -->
+    <div class="game-board" id="gameBoard">
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+    </div>
+    <div class="status" id="statusText">Player X's turn</div>
+    <button class="reset-btn" id="resetBtn">Reset Game</button>
+
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        const statusText = document.getElementById('statusText');
+        const resetBtn = document.getElementById('resetBtn');
+        let currentPlayer = 'x'; // X starts first
+        let gameActive = true;
+
+        // Win combinations
+        const winCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Handle click on cell
+        function handleCellClick(event) {
+            const cell = event.target;
+
+            // Ignore click if the cell is already filled or the game is over
+            if (cell.textContent || !gameActive) return;
+
+            cell.textContent = currentPlayer === 'x' ? 'X' : 'O';
+            cell.classList.add(currentPlayer);
+
+            // Check for win or tie
+            if (checkWin()) {
+                gameActive = false;
+                statusText.textContent = `Player ${currentPlayer.toUpperCase()} wins!`;
+            } else if (Array.from(cells).every(cell => cell.textContent)) {
+                gameActive = false;
+                statusText.textContent = 'It\'s a tie!';
+            } else {
+                currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+                statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
+            }
+        }
+
+        // Check if the current player wins
+        function checkWin() {
+            return winCombinations.some(combination => {
+                const [a, b, c] = combination;
+                return (
+                    cells[a].textContent &&
+                    cells[a].textContent === cells[b].textContent &&
+                    cells[a].textContent === cells[c].textContent
+                );
+            });
+        }
+
+        // Reset the game
+        function resetGame() {
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('x', 'o');
+            });
+            currentPlayer = 'x';
+            gameActive = true;
+            statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
+        }
+
+        // Event listeners for cell clicks and reset button
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleCellClick);
+        });
+
+        resetBtn.addEventListener('click', resetGame);
+    </script>
+
 </body>
 </html>
