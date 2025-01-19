@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume - Aayush Khosla</title>
     <style>
+        /* Light Mode Styles (default) */
         body {
             font-family: "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
             color: #333;
+            transition: all 0.3s ease;
         }
         nav {
             background-color: white;
@@ -32,19 +34,10 @@
         nav a:hover {
             background-color: #eaeaea;
         }
-        h1 {
+        h1, h2, h3 {
             text-align: center;
-            margin: 40px 0 20px;
             font-size: 2.5rem;
-        }
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            padding-top: 20px;
-        }
-        h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            margin: 40px 0 20px;
         }
         p, ul {
             font-size: 1.1rem;
@@ -52,14 +45,38 @@
             max-width: 900px;
             margin: 0 auto;
         }
-        ul {
-            padding-left: 20px;
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
         }
-        img {
-            width: 100px;
-            height: auto;
-            display: block;
-            margin: 10px 0;
+        nav.dark-mode {
+            background-color: #1f1f1f;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        nav.dark-mode a {
+            color: #e0e0e0;
+        }
+        nav.dark-mode a:hover {
+            background-color: #333;
+        }
+
+        /* Dark Mode Toggle Button Styles */
+        .dark-mode-toggle {
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover effect for button */
+        .dark-mode-toggle:hover {
+            background-color: #555;
         }
     </style>
 </head>
@@ -70,92 +87,74 @@
             <a href="Projects.html">Projects</a>
             <a href="About.html">Resume</a>
         </div>
+        <!-- Dark Mode Toggle Button -->
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </nav>
+
     <h1>Resume - Aayush Khosla</h1>
 
-    <h2>About Me</h2>
+    <!-- Resume Content Here -->
+    <section>
+        <h2>About Me</h2>
+        <p>Hey, I’m Aayush Khosla, a passionate student with a strong interest in cricket, coding, and technology. I am always looking for opportunities to learn and grow.</p>
+        
+        <h2>Education</h2>
+        <ul>
+            <li><strong>September 2023 - June 2026:</strong> Port Credit Secondary School - High School Diploma</li>
+            <li><strong>September 2022 - June 2023:</strong> Tomken Rd Middle School</li>
+        </ul>
+        
+        <h2>Work Experience</h2>
+        <ul>
+            <li><strong>November 2023 - Present:</strong> Pizza Making at Domino's (Oakville, Ontario)</li>
+            <ul>
+                <li>Pizza Making</li>
+                <li>Cashier</li>
+                <li>Organizing and opening the store</li>
+            </ul>
+        </ul>
 
-    <h2>Education</h2>
-    <h3>September 2023 - June 2026 | Port Credit Secondary school</h3>
-    <p>High School Diploma, Mississauga, Ontario</p>
+        <h2>Extra-Curricular</h2>
+        <ul>
+            <li><strong>January 2019 - Present:</strong> Cricket Team (Outside School) - Captain of U16 Team</li>
+            <ul>
+                <li>More than 500 runs and 25 wickets</li>
+                <li>Best Player Award at HYCL</li>
+            </ul>
+            <li><strong>November 2024 - Present:</strong> Cricket Club Executive and Assistant Coach at Port Credit</li>
+            <li><strong>November 2023 - Present:</strong> School Coding Club Participant</li>
+        </ul>
 
-    <h3>September 2022 - June 2023 | Tomken Rd middle school</h3>
-    <p>Mississauga, Ontario</p>
+        <h2>Volunteer Experience</h2>
+        <ul>
+            <li><strong>January 2020 - Present:</strong> Tranzac Cricket (100 hours)</li>
+            <li><strong>September 2024 - Present:</strong> Mississauga Library - Library Teen Advisory Group (10 hours)</li>
+            <li><strong>August 2023 - January 2024:</strong> HYAC - Chair Painting (18 hours)</li>
+        </ul>
 
-    <h2>Work Experience</h2>
-    <h3>November 2023 - Present | Pizza making | Domino's</h3>
-    <p>Oakville, Ontario</p>
-    <ul>
-        <li>Pizza making</li>
-        <li>Cashier</li>
-        <li>Organizing and opening the store</li>
-    </ul>
+        <h2>Skills and Abilities</h2>
+        <ul>
+            <li>Leadership: Captain of cricket teams</li>
+            <li>Computer Skills: Python, Learning Java and C++</li>
+        </ul>
 
-    <h2>Extra-Curricular</h2>
-    <h3>January 2019 - Present | Cricket Team (outside school)</h3>
-    <p>Playing for the cricket team in Toronto District Cricket Association</p>
-    <ul>
-        <li>Captain of U16 team</li>
-        <li>More than 500 runs and 25 wickets</li>
-    </ul>
-    <p><a href="https://www.cricclubs.com/TDCA/viewPlayer.do?playerId=1785386&clubId=1809">Cricket Profile</a></p>
-    <img src="https://github.com/user-attachments/assets/a69f5c81-9eb7-4f5a-94a7-6c753f8aeca7" alt="Cricket Profile">
+        <h2>Achievements</h2>
+        <ul>
+            <li><strong>June 2023:</strong> Waterloo Math Contest</li>
+            <li><strong>June 2023:</strong> Best Bowler at HYCL Cricket Tournament</li>
+            <li><strong>May 2023:</strong> 90% Grade 9 Average</li>
+            <li><strong>November 2022:</strong> Medical Certificate of WHIMIS</li>
+        </ul>
+    </section>
 
-    <p>Best player award of HYCL</p>
-    <p><a href="https://cricheroes.com/player-profile/23983386/aayush-khosla/stats?type=m">Best Bowling</a></p>
-    <img src="https://github.com/user-attachments/assets/f172d7ac-778d-4e30-85df-9f1a26300fc2" alt="Best Bowling">
-
-    <h3>November 2024 - Present | Cricket club executive and assistant coach at Port Credit</h3>
-    <h3>November 2023 - Present | Coding club</h3>
-    <p>Participate in the school coding club and look forward to joining competitions</p>
-
-    <h3>September 2023 - December 2023 | Communication Technology Club</h3>
-    <p>Participated in creating new broadcasts in grade 9 by helping run background systems such as the computers, lighting, and cameras</p>
-
-    <h3>May 2021 - Present | Swimming</h3>
-    <p>Participate in swimming classes hopefully to become a lifeguard</p>
-
-    <h2>Volunteer Experience</h2>
-    <h3>January 2020 - Present | Tranzac Cricket</h3>
-    <p>Number of Hours: 100</p>
-    <p>Cricket</p>
-    <p>Toronto, Ontario</p>
-
-    <h3>September 2024 - Present | Mississauga library</h3>
-    <p>Number of Hours: 10</p>
-    <p>Library Teen Advisory Group</p>
-    <p>Mississauga, Ontario</p>
-
-    <h3>August 2023 - January 2024 | HYAC</h3>
-    <p>Number of Hours: 18</p>
-    <p>Chair painting</p>
-    <p>Burlington, Ontario</p>
-
-    <h2>Skills and Abilities</h2>
-    <h3>Leadership</h3>
-    <p>Currently captain of my school's cricket team as well as my current team outside school.</p>
-
-    <h3>Computer skills</h3>
-    <ul>
-        <li>Python</li>
-        <li>Learning Java and C++</li>
-    </ul>
-
-    <h3>Rep Cricket</h3>
-
-    <h2>Achievements</h2>
-    <ul>
-        <li>June 2023 | Waterloo math contest</li>
-        <li>June 2023 | Best Bowler HYCL cricket tournament</li>
-        <li>May 2023 | 90% grade 9 average</li>
-        <li>November 2022 | Medical certificate of WHIMIS</li>
-    </ul>
-
-    <h2>Certifications</h2>
-    <h3>May 2024</h3>
-    <p>Waterloo math contest</p>
-
-    <h3>November 2022</h3>
-    <p>Medical certificate of WHIMIS</p>
+    <script>
+        // Function to toggle dark mode
+        function toggleDarkMode() {
+            // Toggle the 'dark-mode' class on the body element
+            document.body.classList.toggle('dark-mode');
+            // Also toggle the 'dark-mode' class on the nav for styling
+            document.querySelector('nav').classList.toggle('dark-mode');
+        }
+    </script>
 </body>
 </html>
