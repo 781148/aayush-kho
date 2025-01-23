@@ -32,17 +32,33 @@
         nav a:hover {
             background-color: #eaeaea;
         }
-        h1 {
+        header {
             text-align: center;
-            margin: 40px 0 20px;
+            padding: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ddd;
+            margin-bottom: 15px;
+        }
+        h1 {
             font-size: 2.5rem;
+            margin: 10px 0;
         }
         p {
-            text-align: center;
             font-size: 1.1rem;
             line-height: 1.6;
             max-width: 600px;
             margin: 0 auto;
+        }
+        .game-section {
+            text-align: center;
+            padding: 40px 20px;
         }
         .game-board {
             display: grid;
@@ -96,26 +112,33 @@
             <a href="About.html">About</a>
         </div>
     </nav>
-    <h1>Aayush Khosla</h1>
-    <p>An aspiring cricketer with a passion for tech and innovation.</p>
-    <p style="text-align: center; font-size: 1.2rem;">Go to the <a href="About.html">About</a> section to learn more about me and check out my projects in the <a href="Projects.html">Projects</a> section!</p>
-    
-    <h2 style="text-align: center;">Here's a fun game meanwhile...</h2>
 
-    <!-- Tic-Tac-Toe Game -->
-    <div class="game-board" id="gameBoard">
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
+    <header>
+        <!-- Profile Image -->
+        <img src="C:\Users\Gushan\Downloads\56314525-57f0-4a26-b9a3-e8ca1e2359ff.jpeg" alt="Aayush Khosla's Profile Photo">
+        <h1>Aayush Khosla</h1>
+        <p>An aspiring cricketer with a passion for tech and innovation.</p>
+        <p>Go to the <a href="About.html">About</a> section to learn more about me and check out my projects in the <a href="Projects.html">Projects</a> section!</p>
+    </header>
+
+    <div class="game-section">
+        <h2>Here's a fun game meanwhile...</h2>
+
+        <!-- Tic-Tac-Toe Game -->
+        <div class="game-board" id="gameBoard">
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+            <div class="cell" data-cell></div>
+        </div>
+        <div class="status" id="statusText">Player X's turn</div>
+        <button class="reset-btn" id="resetBtn">Reset Game</button>
     </div>
-    <div class="status" id="statusText">Player X's turn</div>
-    <button class="reset-btn" id="resetBtn">Reset Game</button>
 
     <script>
         const cells = document.querySelectorAll('.cell');
@@ -155,7 +178,7 @@
                 statusText.textContent = 'It\'s a tie!';
             } else {
                 currentPlayer = 'o';
-                statusText.textContent = `Player O's turn`;
+                statusText.textContent = "Player O's turn";
 
                 // AI makes its move after player X
                 setTimeout(aiMove, 500);
@@ -196,7 +219,7 @@
                 statusText.textContent = 'It\'s a tie!';
             } else {
                 currentPlayer = 'x';
-                statusText.textContent = `Player X's turn`;
+                statusText.textContent = "Player X's turn";
             }
         }
 
@@ -208,7 +231,7 @@
             });
             currentPlayer = 'x';
             gameActive = true;
-            statusText.textContent = `Player X's turn`;
+            statusText.textContent = "Player X's turn";
         }
 
         // Event listeners for cell clicks and reset button
