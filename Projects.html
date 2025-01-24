@@ -161,7 +161,7 @@
 
             <div class="line-separator"></div>
 
-            <h2>Code Snippet</h2>
+            <h2>Full Code</h2>
             <div class="code-container">
                 <pre>
 # Python Code for Traffic Light System with Pedestrian Button
@@ -184,6 +184,34 @@ def normalrun():
     while True:
         print("Running normal cycle...")
         time.sleep(2)
+
+# Sample function for pedestrian button logic
+def pedestrian_button_logic():
+    while True:
+        if pedestrian_active.is_set():
+            print("Pedestrian button pressed - activating pedestrian lights")
+            time.sleep(10)  # Simulate pedestrian light duration
+            pedestrian_active.clear()
+        time.sleep(1)
+
+# Sample function for controlling traffic lights
+def traffic_light_logic():
+    while True:
+        print("Green light for cars")
+        time.sleep(15)
+        print("Yellow light for cars")
+        time.sleep(3)
+        print("Red light for cars")
+        time.sleep(15)
+
+# Starting threads
+def main():
+    threading.Thread(target=normalrun).start()
+    threading.Thread(target=pedestrian_button_logic).start()
+    threading.Thread(target=traffic_light_logic).start()
+
+if __name__ == "__main__":
+    main()
                 </pre>
             </div>
         </div>
