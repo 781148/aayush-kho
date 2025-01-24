@@ -5,25 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume - Aayush Khosla</title>
     <style>
-        /* Light Mode Styles (default) */
+        /* Base Styles */
         body {
             font-family: "Helvetica Neue", Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background: linear-gradient(45deg, #3498db, #9b59b6); /* Gradient background */
+            color: #fff;
             transition: all 0.3s ease;
         }
         nav {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.1);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         nav a {
-            color: #333;
+            color: #fff;
             text-decoration: none;
             font-weight: bold;
             margin: 0 10px;
@@ -32,37 +35,8 @@
             transition: background-color 0.3s ease;
         }
         nav a:hover {
-            background-color: #eaeaea;
+            background-color: rgba(255, 255, 255, 0.2);
         }
-        h1, h2, h3 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin: 40px 0 20px;
-        }
-        p, ul {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Dark Mode Styles */
-        body.dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        nav.dark-mode {
-            background-color: #1f1f1f;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        nav.dark-mode a {
-            color: #e0e0e0;
-        }
-        nav.dark-mode a:hover {
-            background-color: #333;
-        }
-
-        /* Dark Mode Toggle Button Styles */
         .dark-mode-toggle {
             cursor: pointer;
             padding: 10px 20px;
@@ -73,11 +47,70 @@
             font-size: 1rem;
             transition: background-color 0.3s ease;
         }
-
-        /* Hover effect for button */
         .dark-mode-toggle:hover {
             background-color: #555;
         }
+
+        /* Content Styling */
+        h1, h2, h3 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 40px 0 20px;
+        }
+        p, ul {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 15px;
+        }
+        ul li ul {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(45deg, #2f3640, #4b6584); /* Dark background */
+        }
+        nav.dark-mode {
+            background-color: rgba(31, 31, 31, 0.9);
+        }
+        nav.dark-mode a {
+            color: #e0e0e0;
+        }
+        nav.dark-mode a:hover {
+            background-color: #444;
+        }
+        
+        /* Resume Section Styling */
+        section {
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 20px auto;
+            border-radius: 10px;
+            max-width: 1000px;
+        }
+
+        /* Resume Styling for Each Section */
+        h2 {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+
+        /* Extra Styling for Lists and Subsections */
+        ul li strong {
+            font-weight: bold;
+            color: #f39c12;
+        }
+
     </style>
 </head>
 <body>
