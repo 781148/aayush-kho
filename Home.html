@@ -33,28 +33,35 @@
             background-color: #eaeaea;
         }
         header {
-            text-align: center;
-            padding: 20px 0;
+            padding: 20px;
             background-color: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 10px;
         }
         header img {
             width: 150px;
             height: 150px;
-            border-radius: 50%;
             object-fit: cover;
             border: 4px solid #ddd;
-            margin-bottom: 15px;
+            border-radius: 8px; /* Square with rounded edges */
         }
-        h1 {
+        .profile-info {
+            flex: 1;
+            text-align: left;
+        }
+        .profile-info h1 {
             font-size: 2.5rem;
-            margin: 10px 0;
+            margin: 0;
         }
-        p {
+        .profile-info p {
             font-size: 1.1rem;
             line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
         }
         .game-section {
             text-align: center;
@@ -62,15 +69,14 @@
         }
         .game-board {
             display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
+            grid-template-columns: repeat(3, 120px);
+            grid-template-rows: repeat(3, 120px);
             gap: 5px;
             margin: 30px auto;
-            width: 320px;
         }
         .cell {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -78,6 +84,10 @@
             border: 1px solid #ddd;
             font-size: 2rem;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .cell:hover {
+            background-color: #f1f1f1;
         }
         .cell.x {
             color: #ff6347; /* Red */
@@ -99,8 +109,10 @@
             color: white;
             border: none;
             border-radius: 5px;
-            display: block;
-            margin: 20px auto;
+            transition: background-color 0.3s ease;
+        }
+        .reset-btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -114,17 +126,16 @@
     </nav>
 
     <header>
-        <!-- Profile Image -->
-        <img src="56314525-57f0-4a26-b9a3-e8ca1e2359ff.jpeg" alt="Aayush Khosla's Profile Photo">
-        <h1>Aayush Khosla</h1>
-        <p>An aspiring cricketer with a passion for tech and innovation.</p>
-        <p>Go to the <a href="About.html">About</a> section to learn more about me and check out my projects in the <a href="Projects.html">Projects</a> section!</p>
+        <img src="profile.jpg" alt="Aayush Khosla's Profile Photo">
+        <div class="profile-info">
+            <h1>Aayush Khosla</h1>
+            <p>An aspiring cricketer with a passion for tech and innovation.</p>
+            <p>Visit the <a href="About.html">About</a> section to learn more and check out my projects in the <a href="Projects.html">Projects</a> section!</p>
+        </div>
     </header>
 
     <div class="game-section">
         <h2>Here's a fun game meanwhile...</h2>
-
-        <!-- Tic-Tac-Toe Game -->
         <div class="game-board" id="gameBoard">
             <div class="cell" data-cell></div>
             <div class="cell" data-cell></div>
@@ -144,10 +155,9 @@
         const cells = document.querySelectorAll('.cell');
         const statusText = document.getElementById('statusText');
         const resetBtn = document.getElementById('resetBtn');
-        let currentPlayer = 'x'; // X starts first
+        let currentPlayer = 'x';
         let gameActive = true;
 
-        // Win combinations
         const winCombinations = [
             [0, 1, 2],
             [3, 4, 5],
@@ -159,17 +169,12 @@
             [2, 4, 6]
         ];
 
-        // Handle click on cell
         function handleCellClick(event) {
             const cell = event.target;
-
-            // Ignore click if the cell is already filled or the game is over
-            if (cell.textContent || !gameActive || currentPlayer === 'o') return;
-
-            cell.textContent = currentPlayer === 'x' ? 'X' : 'O';
+            if (cell.textContent || !gameActive) return;
+            cell.textContent = currentPlayer.toUpperCase();
             cell.classList.add(currentPlayer);
 
-            // Check for win or tie
             if (checkWin()) {
                 gameActive = false;
                 statusText.textContent = `Player ${currentPlayer.toUpperCase()} wins!`;
@@ -177,53 +182,20 @@
                 gameActive = false;
                 statusText.textContent = 'It\'s a tie!';
             } else {
-                currentPlayer = 'o';
-                statusText.textContent = "Player O's turn";
-
-                // AI makes its move after player X
-                setTimeout(aiMove, 500);
+                currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+                statusText.textContent = `Player ${currentPlayer.toUpperCase()}'s turn`;
             }
         }
 
-        // Check if the current player wins
         function checkWin() {
-            return winCombinations.some(combination => {
-                const [a, b, c] = combination;
-                return (
-                    cells[a].textContent &&
-                    cells[a].textContent === cells[b].textContent &&
-                    cells[a].textContent === cells[c].textContent
-                );
+            return winCombinations.some(combo => {
+                const [a, b, c] = combo;
+                return cells[a].textContent &&
+                       cells[a].textContent === cells[b].textContent &&
+                       cells[a].textContent === cells[c].textContent;
             });
         }
 
-        // AI makes its move
-        function aiMove() {
-            // Get all available cells
-            const availableCells = Array.from(cells).filter(cell => !cell.textContent);
-
-            // If there are no available cells, return
-            if (availableCells.length === 0) return;
-
-            // AI randomly selects an available cell
-            const randomCell = availableCells[Math.floor(Math.random() * availableCells.length)];
-            randomCell.textContent = 'O';
-            randomCell.classList.add('o');
-
-            // Check for win or tie after AI move
-            if (checkWin()) {
-                gameActive = false;
-                statusText.textContent = 'Player O wins!';
-            } else if (Array.from(cells).every(cell => cell.textContent)) {
-                gameActive = false;
-                statusText.textContent = 'It\'s a tie!';
-            } else {
-                currentPlayer = 'x';
-                statusText.textContent = "Player X's turn";
-            }
-        }
-
-        // Reset the game
         function resetGame() {
             cells.forEach(cell => {
                 cell.textContent = '';
@@ -234,11 +206,7 @@
             statusText.textContent = "Player X's turn";
         }
 
-        // Event listeners for cell clicks and reset button
-        cells.forEach(cell => {
-            cell.addEventListener('click', handleCellClick);
-        });
-
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
         resetBtn.addEventListener('click', resetGame);
     </script>
 </body>
