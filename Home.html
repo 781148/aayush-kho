@@ -103,11 +103,11 @@
         }
 
         .cell.x {
-            color: #ff6347; /* Red */
+            color: #ff6347;
         }
 
         .cell.o {
-            color: #4682b4; /* Blue */
+            color: #4682b4;
         }
 
         .status {
@@ -133,14 +133,15 @@
     </style>
 </head>
 <body>
-<nav>
-    <a href="Home.html">Home</a>
-    <a href="Projects.html">Projects</a>
-    <a href="About.html">About</a>
-    <a href="DataViz.html">Data Visualization</a>
-</nav>
+    <!-- Nav Bar -->
+    <nav>
+        <a href="Home.html">Home</a>
+        <a href="Projects.html">Projects</a>
+        <a href="About.html">About</a>
+        <a href="DataViz.html">Data Visualization</a>
+    </nav>
 
-
+    <!-- Header / Profile -->
     <header>
         <img src="56314525-57f0-4a26-b9a3-e8ca1e2359ff.jpeg" alt="Aayush Khosla's Profile Photo">
         <div class="profile-info">
@@ -150,6 +151,7 @@
         </div>
     </header>
 
+    <!-- Tic-Tac-Toe Game -->
     <div class="game-section">
         <h2>Play Tic-Tac-Toe!</h2>
         <div class="game-board" id="gameBoard">
@@ -175,9 +177,9 @@
         let gameActive = true;
 
         const winCombinations = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
+            [0,1,2],[3,4,5],[6,7,8],
+            [0,3,6],[1,4,7],[2,5,8],
+            [0,4,8],[2,4,6]
         ];
 
         function handleCellClick(event) {
@@ -190,26 +192,26 @@
             if (checkWin()) {
                 gameActive = false;
                 statusText.textContent = `Player ${currentPlayer.toUpperCase()} wins!`;
-            } else if (Array.from(cells).every(cell => cell.textContent)) {
+            } else if ([...cells].every(cell => cell.textContent)) {
                 gameActive = false;
                 statusText.textContent = "It's a tie!";
             } else {
                 currentPlayer = 'o';
-                statusText.textContent = `Player O's turn`;
+                statusText.textContent = "Player O's turn";
                 setTimeout(aiMove, 500);
             }
         }
 
         function aiMove() {
-            const emptyCells = Array.from(cells).filter(cell => !cell.textContent);
-            const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            const emptyCells = [...cells].filter(cell => !cell.textContent);
+            const randomCell = emptyCells[Math.floor(Math.random()*emptyCells.length)];
             randomCell.textContent = 'O';
             randomCell.classList.add('o');
 
             if (checkWin()) {
                 gameActive = false;
-                statusText.textContent = 'Player O wins!';
-            } else if (Array.from(cells).every(cell => cell.textContent)) {
+                statusText.textContent = "Player O wins!";
+            } else if ([...cells].every(cell => cell.textContent)) {
                 gameActive = false;
                 statusText.textContent = "It's a tie!";
             } else {
@@ -220,7 +222,7 @@
 
         function checkWin() {
             return winCombinations.some(combo => {
-                const [a, b, c] = combo;
+                const [a,b,c] = combo;
                 return cells[a].textContent &&
                        cells[a].textContent === cells[b].textContent &&
                        cells[a].textContent === cells[c].textContent;
@@ -230,7 +232,7 @@
         function resetGame() {
             cells.forEach(cell => {
                 cell.textContent = '';
-                cell.classList.remove('x', 'o');
+                cell.classList.remove('x','o');
             });
             currentPlayer = 'x';
             gameActive = true;
