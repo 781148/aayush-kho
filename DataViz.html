@@ -58,6 +58,37 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             background-color: white;
         }
+        .stats-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        table {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 12px 15px;
+            color: #2c3e50;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -72,6 +103,65 @@
     
     <div class="visualization-container">
         <img src="image.png" alt="Anscombe's Quartet - Four datasets with identical statistics but different distributions">
+    </div>
+
+    <div class="stats-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Dataset</th>
+                    <th>Mean X</th>
+                    <th>Mean Y</th>
+                    <th>Variance X</th>
+                    <th>Variance Y</th>
+                    <th>Correlation (r)</th>
+                    <th>Regression Line</th>
+                    <th>R²</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Dataset 1</td>
+                    <td>9.00</td>
+                    <td>7.50</td>
+                    <td>11.00</td>
+                    <td>4.13</td>
+                    <td>0.82</td>
+                    <td>y = 0.50x + 3.00</td>
+                    <td>0.67</td>
+                </tr>
+                <tr>
+                    <td>Dataset 2</td>
+                    <td>9.00</td>
+                    <td>7.50</td>
+                    <td>11.00</td>
+                    <td>4.13</td>
+                    <td>0.82</td>
+                    <td>y = 0.50x + 3.00</td>
+                    <td>0.67</td>
+                </tr>
+                <tr>
+                    <td>Dataset 3</td>
+                    <td>9.00</td>
+                    <td>7.50</td>
+                    <td>11.00</td>
+                    <td>4.12</td>
+                    <td>0.82</td>
+                    <td>y = 0.50x + 3.00</td>
+                    <td>0.67</td>
+                </tr>
+                <tr>
+                    <td>Dataset 4</td>
+                    <td>9.00</td>
+                    <td>7.50</td>
+                    <td>11.00</td>
+                    <td>4.12</td>
+                    <td>0.82</td>
+                    <td>y = 0.50x + 3.00</td>
+                    <td>0.67</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
