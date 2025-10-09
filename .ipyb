@@ -1,1 +1,112 @@
+# ---- Full Anscombe EDA in one cell ----
 
+import sys
+import os
+
+# Install packages (in Jupyter environment)
+!{sys.executable} -m pip install --upgrade pip
+!{sys.executable} -m pip install pandas numpy matplotlib seaborn statsmodels plotly altair
+
+# Imports
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import statsmodels.api as sm
+import plotly.express as px
+import altair as alt
+
+# Create output folder
+os.makedirs("output", exist_ok=True)
+
+# Set style
+sns.set(style="whitegrid", context="talk")
+
+# ----- Load Anscombe dataset -----
+data = {
+    'dataset': ['I']*11 + ['II']*11 + ['III']*11 + ['IV']*11,
+    'x': [10,8,13,9,11,14,6,4,12,7,5]*4,
+    'y': [8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68,
+          9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74,
+          7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73,
+          6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.5,5.56,7.91,6.89]
+}
+df = pd.DataFrame(data)
+
+# ----- Summary statistics -----
+def summary_stats(g):
+    n = g.shape[0]
+    mean_x = g['x'].mean()
+    mean_y = g['y'].mean()
+    var_x = g['x'].var(ddof=1)
+    var_y = g['y'].var(ddof=1)
+    std_x = g['x'].std(ddof=1)
+    std_y = g['y'].std(ddof=1)
+    cov = g[['x','y']].cov().iloc[0,1]
+    corr = g['x'].corr(g['y'])
+    X = sm.add_constant(g['x'])
+    model = sm.OLS(g['y'], X).fit()
+    slope = model.params['x']
+    intercept = model.params['const']
+    r2 = model.rsquared
+    return pd.Series({
+        'n': n,
+        'mean_x': mean_x, 'mean_y': mean_y,
+        'var_x': var_x, 'var_y': var_y,
+        'std_x': std_x, 'std_y': std_y,
+        'cov_xy': cov, 'r_xy': corr,
+        'slope': slope, 'intercept': intercept, 'r2': r2
+    })
+
+summary_table = df.groupby('dataset').apply(summary_stats).round(4)
+print("Summary statistics:\n", summary_table)
+
+# ----- Scatter plots with regression lines -----
+for name, group in df.groupby('dataset'):
+    plt.figure(figsize=(6,4))
+    sns.scatterplot(data=group, x='x', y='y', s=70)
+    X = sm.add_constant(group['x'])
+    model = sm.OLS(group['y'], X).fit()
+    xs = np.linspace(group['x'].min()-1, group['x'].max()+1, 100)
+    ys = model.params['const'] + model.params['x']*xs
+    plt.plot(xs, ys, linestyle='--', label=f"y={model.params['x']:.2f}x+{model.params['const']:.2f}")
+    plt.title(f"Dataset {name} — Scatter + OLS")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f"output/scatter_reg_{name}.png", dpi=200)
+    plt.show()
+
+# ----- Residual plots -----
+for name, group in df.groupby('dataset'):
+    X = sm.add_constant(group['x'])
+    model = sm.OLS(group['y'], X).fit()
+    group['yhat'] = model.predict(X)
+    group['resid'] = group['y'] - group['yhat']
+    plt.figure(figsize=(6,4))
+    sns.residplot(x='x', y='y', data=group, lowess=True, scatter_kws={'s':50})
+    plt.title(f"Dataset {name} — Residuals")
+    plt.xlabel("x")
+    plt.ylabel("Residual (y - yhat)")
+    plt.tight_layout()
+    plt.savefig(f"output/resid_{name}.png", dpi=200)
+    plt.show()
+
+# ----- Boxplots -----
+plt.figure(figsize=(10,4))
+plt.subplot(1,2,1)
+sns.boxplot(data=df, x='dataset', y='x')
+plt.title("Boxplot of x per dataset")
+plt.subplot(1,2,2)
+sns.boxplot(data=df, x='dataset', y='y')
+plt.title("Boxplot of y per dataset")
+plt.tight_layout()
+plt.savefig("output/boxplots_xy.png", dpi=200)
+plt.show()
+
+# ----- Optional interactive Plotly -----
+fig = px.scatter(df, x='x', y='y', color='dataset', facet_col='dataset', title="Interactive Anscombe scatter")
+fig.update_layout(height=600, width=900)
+fig.write_html("output/anscombe_plotly.html")
+print("EDA complete! Figures saved in output folder, interactive plot saved as HTML.")
